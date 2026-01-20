@@ -73,7 +73,15 @@ The following tools and providers already implement portable S3-compatible stora
 
 ## How decisions are made
 
-This specification is developed through open RFC process. [Describe: who reviews? how do things get accepted? is there a steering committee?]
+This specification is developed through open RFC process. Please open an issue if you have a topic you think should be added to this specfication. 
+Conversations will be moderated by Oli and David until more admins are added.
+
+
+## Core Principles
+
+- Recognize and build off defacto standards
+- Working sub-optimal systems over idealized perfect systems
+- Simplicity and interoperability over incremental additional value
 
 ## Get involved
 

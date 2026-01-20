@@ -1,15 +1,13 @@
 # Cloud Portable Storage
 
-**Purpose of this project**
+## What is this?
 
-S3-compatible APIs have become the de-facto standard for digital storage.
-
-**This is a Request for Comments (RFC) to define a strict, minimal subset of the S3 API**. The aim is to enable interoperability across cloud providers and open source tools. 
+A Request for Comments (RFC) to establish a minimal, strictly-defined subset of the S3 API that guarantees interoperability. If your storage implements this spec, applications can switch providers with zero code changes.
+This is an open specification, not open source software. The spec itself is freely available and implementable by anyone—proprietary or open source providers.
 
 Write code once. Run it on AWS, Cloudflare, MinIO, or your own server. Any bucket will do.
 
-
-**Motivation**
+## Why does this matter?
 
 "In a world where digital infrastructure is often foreign-owned and opaque, wanting more control is natural. 
 But sovereignty, if defined as owning every layer of a technological stack, can quickly become counterproductive. It leads to balkanized systems, limited interoperability and a retrenchment from global cooperation. 
@@ -23,3 +21,27 @@ If a sufficiently clear specfication exists, governments can leverage it to beco
 To be clear, the goal isn't to attack or remove hyperscalers it is to create a fluid market through specifications that make agency - through portiability and choice - for all countries, not just the wealthy. Countries can use these specficiations to use foreign companies, domestic providers or even build their operate their own services, in a manner that does minimizes vendor or technology lock-in.
 
 Read more on the thinking about this here: https://www.techpolicy.press/the-path-to-a-sovereign-tech-stack-is-via-a-commodified-tech-stack/
+
+## Scope
+
+This specification covers:
+- Core bucket operations (create, delete, list)
+- Object operations (put, get, delete, copy)
+- Basic metadata and ACLs
+- [specific list]
+
+Explicitly excluded:
+- Versioning
+- Advanced lifecycle policies
+- [specific list]
+
+## How decisions are made
+
+This specification is developed through open RFC process. [Describe: who reviews? how do things get accepted? is there a steering committee?]
+
+## Get involved
+
+- Review the draft specification in `/spec`
+- Submit feedback via GitHub issues
+- Propose changes via pull requests
+- Join the discussion: [link]

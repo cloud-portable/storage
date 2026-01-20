@@ -24,19 +24,6 @@ Read more on the thinking about this here: https://www.techpolicy.press/the-path
 
 ## Scope
 
-This specification covers:
-- Core bucket operations (create, delete, list)
-- Object operations (put, get, delete, copy)
-- Basic metadata and ACLs
-- [specific list]
-
-Explicitly excluded:
-- Versioning
-- Advanced lifecycle policies
-- [specific list]
-
-## Compatibility Tiers
-
 Compliance is divided into 3 tiers. To be considered "S3 Compatible", a service must fully implement Tier 1.
 
 ### Tier 1: Core

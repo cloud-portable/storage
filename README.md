@@ -1,11 +1,10 @@
 # Cloud Portable Storage
 
-## What is this?
+_S3-compatible APIs have become the de-facto standard for digital storage._
 
-A Request for Comments (RFC) to establish a minimal, strictly-defined subset of the S3 API that guarantees interoperability. If your storage implements this spec, applications can switch providers with zero code changes.
-This is an open specification, not open source software. The spec itself is freely available and implementable by anyone—proprietary or open source providers.
+This repo defines a Request for Comments (RFC) to establish a minimal, strictly-defined subset of the S3 API that guarantees interoperability. If your storage implements this spec, applications can switch providers with zero code changes. This is an open specification. The spec itself is freely available and implementable by anyone—proprietary or open source providers.
 
-Write code once. Run it on AWS, Cloudflare, MinIO, or your own server. Any bucket will do.
+Write code once. Run it on AWS, Cloudflare, or [Garage](https://garagehq.deuxfleurs.fr/) on your own server. Any bucket will do.
 
 ## Why does this matter?
 
@@ -44,38 +43,38 @@ The following tools and providers already implement portable S3-compatible stora
 
 ### Open Source Tools
 
-| Tool | Tier 1 (Core) | Tier 2 (Reliability) | Tier 3 (Ecosystem) | Documentation |
+| Tool | Tier 1 (Core) | Tier 2 (Reliability) | Tier 3 (Advanced) | Documentation |
 | :--- | :---: | :---: | :---: | :--- |
-| **MinIO** | ✅ | ✅ | ✅ | [MinIO S3 API](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#s3-api-compatibility) |
 | **Ceph (RGW)** | ✅ | ✅ | ✅ | [Ceph S3 API](https://docs.ceph.com/en/latest/radosgw/s3/) |
-| **Zenko (CloudServer)** | ✅ | ✅ | ✅ | [CloudServer](https://github.com/scality/cloudserver) |
 | **Garage** | ✅ | ✅ | ⚠️ | [Compatibility Matrix](https://garagehq.deuxfleurs.fr/documentation/reference-manual/s3-compatibility/) |
-| **SeaweedFS** | ✅ | ✅ | ⚠️ | [SeaweedFS S3 API](https://github.com/seaweedfs/seaweedfs/wiki/Amazon-S3-API) |
+| **MinIO** | ✅ | ✅ | ✅ | [MinIO S3 API](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#s3-api-compatibility) |
 | **OpenStack Swift** | ✅ | ✅ | ⚠️ | [Swift S3 Compat](https://docs.openstack.org/swift/latest/s3_compat.html) |
+| **SeaweedFS** | ✅ | ✅ | ⚠️ | [SeaweedFS S3 API](https://github.com/seaweedfs/seaweedfs/wiki/Amazon-S3-API) |
+| **Zenko (CloudServer)** | ✅ | ✅ | ✅ | [CloudServer](https://github.com/scality/cloudserver) |
 
 ### Cloud Services
 
-| Provider | Tier 1 (Core) | Tier 2 (Reliability) | Tier 3 (Ecosystem) | Documentation |
+| Provider | Tier 1 (Core) | Tier 2 (Reliability) | Tier 3 (Advanced) | Documentation |
 | :--- | :---: | :---: | :---: | :--- |
 | **AWS S3** | ✅ | ✅ | ✅ | [API Reference](https://aws.amazon.com/s3/) |
-| **Wasabi** | ✅ | ✅ | ✅ | [API Support](https://wasabi.com/s3-compatible-cloud-storage/) |
-| **Cloudflare R2** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://developers.cloudflare.com/r2/api/s3/api/) |
 | **Backblaze B2** | ✅ | ✅ | ⚠️ | [S3 Compatible API](https://www.backblaze.com/docs/cloud-storage-s3-compatible-api) |
+| **Cloudflare R2** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://developers.cloudflare.com/r2/api/s3/api/) |
 | **DigitalOcean Spaces** | ✅ | ✅ | ⚠️ | [Spaces API](https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/) |
-| **Scaleway Object Storage** | ✅ | ✅ | ⚠️ | [API Call List](https://www.scaleway.com/en/docs/object-storage/api-cli/using-api-call-list/) |
 | **Google Cloud Storage** | ✅ | ✅ | ⚠️ | [Interoperability](https://cloud.google.com/storage/docs/interoperability) |
-| **Linode (Akamai)** | ✅ | ✅ | ⚠️ | [Object Storage API](https://techdocs.akamai.com/cloud-computing/docs/object-storage-s3-api) |
-| **IDrive e2** | ✅ | ✅ | ⚠️ | [Developer Guide](https://www.idrive.com/s3-storage-e2/guides/s3_developer_guide) |
-| **Tigris** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://www.tigrisdata.com/docs/s3/) |
-| **Oracle Cloud (OCI)** | ✅ | ✅ | ⚠️ | [S3 Compatibility API](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/s3compatibleapi.htm) |
 | **IBM Cloud Object Storage** | ✅ | ✅ | ⚠️ | [Compatibility API](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-compatibility-api) |
+| **IDrive e2** | ✅ | ✅ | ⚠️ | [Developer Guide](https://www.idrive.com/s3-storage-e2/guides/s3_developer_guide) |
+| **Linode (Akamai)** | ✅ | ✅ | ⚠️ | [Object Storage API](https://techdocs.akamai.com/cloud-computing/docs/object-storage-s3-api) |
+| **Oracle Cloud (OCI)** | ✅ | ✅ | ⚠️ | [S3 Compatibility API](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/s3compatibleapi.htm) |
+| **Scaleway Object Storage** | ✅ | ✅ | ⚠️ | [API Call List](https://www.scaleway.com/en/docs/object-storage/api-cli/using-api-call-list/) |
+| **Tigris** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://www.tigrisdata.com/docs/s3/) |
+| **Wasabi** | ✅ | ✅ | ✅ | [API Support](https://wasabi.com/s3-compatible-cloud-storage/) |
 
+_See something missing? Open a [pull request](https://github.com/cloud-portable/storage/pulls) to add it._
 
 ## How decisions are made
 
 This specification is developed through open RFC process. Please open an issue if you have a topic you think should be added to this specfication. 
-Conversations will be moderated by Oli and David until more admins are added.
-
+Conversations will be moderated by @deaves and @olizilla until more admins are added.
 
 ## Core Principles
 
@@ -85,7 +84,7 @@ Conversations will be moderated by Oli and David until more admins are added.
 
 ## Get involved
 
-- Review the draft specification in `specdoc.md`
-- Submit feedback via GitHub issues
-- Propose changes via pull requests
-- Please follow our [code of conduct]([url](https://github.com/cloud-portable/storage/blob/main/CODE_OF_CONDUCT.md)) and be kind
+- Review the draft specification in [rfc-storage-tier-1.md](https://github.com/cloud-portable/storage/blob/main/rfc-storage-tier-1.md)
+- Share feedback and ask questions via [GitHub issues](https://github.com/cloud-portable/storage/issues)
+- Propose changes via [pull requests](https://github.com/cloud-portable/storage/pulls)
+- Please follow our [code of conduct](https://github.com/cloud-portable/storage/blob/main/CODE_OF_CONDUCT.md) and be kind

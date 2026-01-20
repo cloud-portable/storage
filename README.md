@@ -12,7 +12,7 @@ Write code once. Run it on AWS, Cloudflare, MinIO, or your own server. Any bucke
 "In a world where digital infrastructure is often foreign-owned and opaque, wanting more control is natural. 
 But sovereignty, if defined as owning every layer of a technological stack, can quickly become counterproductive. It leads to balkanized systems, limited interoperability and a retrenchment from global cooperation. 
 The incentives for creative development disappear. Competition and innovation subside."
-- [The Services Gap](https://lisboncouncil.net/the-service-gap-europe-international-digital-strategy-2025/)
+From [The Services Gap](https://lisboncouncil.net/the-service-gap-europe-international-digital-strategy-2025/)
 
 The underlying thinking of this project is to create a path to agency and sovereignty through portability.  Open specifications, that recognize as opposed to displace, existing defacto standards can further commodify mature technologies—starting and this increase optionality. It is unrealistic and would be counterproductive to have every country build its own digital infrastructure within the next decade. Success means making provider switching simple and creating a liquid market where domestic, international and inhouse providers can compete on service, resiliance and legal reliability, not lock-in. 
 

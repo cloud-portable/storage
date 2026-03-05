@@ -1,90 +1,98 @@
 # Cloud Portable Storage
 
-_S3-compatible APIs have become the de-facto standard for digital storage._
+S3-compatible APIs have become the de-facto standard for digital storage.
 
-This repo defines a Request for Comments (RFC) to establish a minimal, strictly-defined subset of the S3 API that guarantees interoperability. If your storage implements this spec, applications can switch providers with zero code changes. This is an open specification. The spec itself is freely available and implementable by anyone—proprietary or open source providers.
+This repository establishes an open specification for a minimal S3-compatible API subset, enabling storage interoperability across providers.
 
-Write code once. Run it on AWS, Cloudflare, or [Garage](https://garagehq.deuxfleurs.fr/) on your own server. Any bucket will do.
+## Defining S3 Compatibility
 
-## Why does this matter?
+While there is no official standards body definition of "S3-compatible," the ceph/s3-tests conformance suite (500+ tests) provides a practical, testable definition. This specification uses ceph/s3-tests pass rates to define two compliance tiers, enabling government procurement officers and enterprise decision-makers to specify concrete compatibility requirements and prevent vendor lock-in.
 
-"In a world where digital infrastructure is often foreign-owned and opaque, wanting more control is natural. 
-But sovereignty, if defined as owning every layer of a technological stack, can quickly become counterproductive. It leads to balkanized systems, limited interoperability and a retrenchment from global cooperation. 
-The incentives for creative development disappear. Competition and innovation subside."
-From [The Services Gap](https://lisboncouncil.net/the-service-gap-europe-international-digital-strategy-2025/)
+## Why S3 is the De Facto Standard
 
-The underlying thinking of this project is to create a path to agency and sovereignty through portability.  Open specifications, that recognize as opposed to displace, existing defacto standards can further commodify mature technologies—starting and this increase optionality. It is unrealistic and would be counterproductive to have every country build its own digital infrastructure within the next decade. Success means making provider switching simple and creating a liquid market where domestic, international and inhouse providers can compete on service, resiliance and legal reliability, not lock-in. 
+- **Universal SDK Support**: Mature S3 client libraries exist for Python (boto3), JavaScript (AWS SDK), Java, Go, .NET, Ruby, PHP, and Rust
+- **Cloud Provider Convergence**: Major cloud providers offer S3-compatible object storage, including Cloudflare R2, Backblaze B2, DigitalOcean Spaces, Oracle Cloud, IBM Cloud, Wasabi, and Scaleway
+- **Tool Ecosystem**: Thousands of applications and tools work exclusively with S3 APIs—backup software, data pipeline tools, static site generators, media processing systems, and data analytics platforms
+- **Open Source Implementation**: Multiple independent open-source implementations (MinIO, Ceph, Garage, SeaweedFS) validate that the API is well-specified enough to replicate
 
-If a sufficiently clear specification exists, governments can leverage it to become market shapers: using procurement power to demand interoperability, recognizing de facto standards, and coordinating across borders. A small number of governments, operating around a clear set of specificiations can shape a market. This is how the railway market was shaped - governments chose what is now referred to the "standard gauge". We need to once again choose some standards for the core building blocks of a digital society.
+The S3 API is the only object storage interface with this level of ecosystem adoption.
 
-To be clear, the goal isn't to attack or remove hyperscalers it is to create a fluid market through specifications that make agency - through portability and choice - for all countries, not just the wealthy. Countries can use these specificiations to use foreign companies, domestic providers or even build their operate their own services, in a manner that does minimizes vendor or technology lock-in.
+## Why This Matters
 
-Read more on the thinking about this [here](https://www.techpolicy.press/the-path-to-a-sovereign-tech-stack-is-via-a-commodified-tech-stack/)
+Procurement requirements that do not specify API compatibility standards result in incompatible storage systems, reduced competition, and vendor lock-in.
 
-## Scope
+By specifying S3 compatibility tiers in procurement requirements, agencies can:
+- Enable genuine competition among vendors on price and service quality
+- Prevent lock-in to any single provider
+- Maintain data portability and migration options
+- Support domestic providers while preserving access to international tools and ecosystems
 
-Compliance is divided into 3 tiers. To be considered "S3 Compatible", a service must fully implement Tier 1.
+## Compliance Tiers
 
-### Tier 1: Core
+S3 compatibility is sufficiently widespread that most providers support the same core feature set, including multipart uploads, presigned URLs, CORS, and lifecycle management. This specification defines two tiers: Production Ready, which covers the features common to nearly all providers, and Encryption Ready, which adds customer-controlled encryption for sensitive data.
 
-The minimum requirements for a system to function as an object store. Enables basic CRUD operations. Most static site generators and simple backup tools only need this. 
+### Tier 1: Production Ready
+**Purpose:** Works with all major tools, SDKs, and large files
+**Use Cases:** Production web applications, media storage, data lakes, backup systems
+**Compliance Threshold:** ≥95% pass rate on ceph/s3-tests Production Operations subset
 
-### Tier 2: Reliability
+**Required Operations:**
+- Bucket operations: CreateBucket, DeleteBucket, HeadBucket, ListBuckets, GetBucketLocation
+- Object operations: PutObject, GetObject, HeadObject, DeleteObject, DeleteObjects, ListObjects/ListObjectsV2, CopyObject
+- Complete multipart upload support (CreateMultipartUpload, UploadPart, CompleteMultipartUpload, AbortMultipartUpload, ListParts, ListMultipartUploads)
+- Presigned URLs for GET and PUT operations
+- Virtual-host style and path-style URLs
+- Range requests and conditional operations (If-Match, If-None-Match, If-Modified-Since)
+- CORS configuration
+- Lifecycle management
+- Custom metadata support (x-amz-meta-* headers)
+- AWS Signature Version 4 authentication
+- Full compatibility with AWS CLI, boto3, rclone, s3cmd, and major S3 SDKs
 
-Essential for production workloads handling files larger than 100MB. Ensures reliability over unstable networks via multipart uploads.
+### Tier 2: Encryption Ready
+**Purpose:** Tier 1 plus customer-controlled encryption for sensitive data
+**Use Cases:** Government classified or sensitive data, healthcare, financial services, any environment where the storage provider must not be able to read stored data
+**Compliance Threshold:** ≥98% pass rate on ceph/s3-tests Full Suite
 
-### Tier 3: Advanced
+**All Tier 1 Requirements PLUS:**
+- Server-side encryption with customer-provided keys (SSE-C): the customer provides an encryption key with each request; the provider encrypts/decrypts data but never stores the key
 
-Features required for complex application architectures, including presigned URLs for client-side uploads and custom metadata handling.
+## Recommended Procurement Language
+
+> *"Storage services must demonstrate compliance with Tier 1: Production Ready of the S3 API Compatibility Specification v1.0, validated through successful completion of the ceph/s3-tests conformance suite with ≥95% pass rate."*
+
+For environments handling sensitive data:
+
+> *"Storage services must demonstrate compliance with Tier 2: Encryption Ready, including support for SSE-C (Server-Side Encryption with Customer-Provided Keys), validated through ≥98% pass rate on the full ceph/s3-tests suite."*
 
 ## Implementors
 
-The following tools and providers already implement portable S3-compatible storage interfaces
-
-### Open Source Tools
-
-| Tool | Tier 1 (Core) | Tier 2 (Reliability) | Tier 3 (Advanced) | Documentation |
-| :--- | :---: | :---: | :---: | :--- |
-| **Ceph (RGW)** | ✅ | ✅ | ✅ | [Ceph S3 API](https://docs.ceph.com/en/latest/radosgw/s3/) |
-| **Garage** | ✅ | ✅ | ⚠️ | [Compatibility Matrix](https://garagehq.deuxfleurs.fr/documentation/reference-manual/s3-compatibility/) |
-| **MinIO** | ✅ | ✅ | ✅ | [MinIO S3 API](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#s3-api-compatibility) |
-| **OpenStack Swift** | ✅ | ✅ | ⚠️ | [Swift S3 Compat](https://docs.openstack.org/swift/latest/s3_compat.html) |
-| **SeaweedFS** | ✅ | ✅ | ⚠️ | [SeaweedFS S3 API](https://github.com/seaweedfs/seaweedfs/wiki/Amazon-S3-API) |
-| **Zenko (CloudServer)** | ✅ | ✅ | ✅ | [CloudServer](https://github.com/scality/cloudserver) |
+### Open Source
+Ceph (RGW), Garage, MinIO, OpenStack Swift, SeaweedFS, Zenko (CloudServer)
 
 ### Cloud Services
-
-| Provider | Tier 1 (Core) | Tier 2 (Reliability) | Tier 3 (Advanced) | Documentation |
-| :--- | :---: | :---: | :---: | :--- |
-| **AWS S3** | ✅ | ✅ | ✅ | [API Reference](https://aws.amazon.com/s3/) |
-| **Backblaze B2** | ✅ | ✅ | ⚠️ | [S3 Compatible API](https://www.backblaze.com/docs/cloud-storage-s3-compatible-api) |
-| **Cloudflare R2** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://developers.cloudflare.com/r2/api/s3/api/) |
-| **DigitalOcean Spaces** | ✅ | ✅ | ⚠️ | [Spaces API](https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/) |
-| **Google Cloud Storage** | ✅ | ✅ | ⚠️ | [Interoperability](https://cloud.google.com/storage/docs/interoperability) |
-| **IBM Cloud Object Storage** | ✅ | ✅ | ⚠️ | [Compatibility API](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-compatibility-api) |
-| **IDrive e2** | ✅ | ✅ | ⚠️ | [Developer Guide](https://www.idrive.com/s3-storage-e2/guides/s3_developer_guide) |
-| **Linode (Akamai)** | ✅ | ✅ | ⚠️ | [Object Storage API](https://techdocs.akamai.com/cloud-computing/docs/object-storage-s3-api) |
-| **Oracle Cloud (OCI)** | ✅ | ✅ | ⚠️ | [S3 Compatibility API](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/s3compatibleapi.htm) |
-| **Scaleway Object Storage** | ✅ | ✅ | ⚠️ | [API Call List](https://www.scaleway.com/en/docs/object-storage/api-cli/using-api-call-list/) |
-| **Tigris** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://www.tigrisdata.com/docs/s3/) |
-| **Wasabi** | ✅ | ✅ | ✅ | [API Support](https://wasabi.com/s3-compatible-cloud-storage/) |
-
-_See something missing? Open a [pull request](https://github.com/cloud-portable/storage/pulls) to add it._
-
-## How decisions are made
-
-This specification is developed through open RFC process. Please open an issue if you have a topic you think should be added to this specfication. 
-Conversations will be moderated by @deaves and @olizilla until more admins are added.
+AWS S3, Backblaze B2, Cloudflare R2, DigitalOcean Spaces, Google Cloud Storage, IBM Cloud Object Storage, IDrive e2, Linode, Oracle Cloud, Scaleway, Tigris, Wasabi
 
 ## Core Principles
 
-- Recognize and build off defacto standards
-- Working sub-optimal systems over idealized perfect systems
-- Simplicity and interoperability over incremental additional value
+- Recognize and build upon de facto standards
+- Prioritize working suboptimal systems over idealized perfection
+- Emphasize simplicity and interoperability over incremental additional value
+- Enable sovereignty through portability rather than complete infrastructure ownership
 
-## Get involved
+This approach commodifies mature technologies and increases provider optionality, allowing domestic and international vendors to compete on service quality rather than lock-in.
 
-- Review the draft specification in [rfc-storage-tier-1.md](https://github.com/cloud-portable/storage/blob/main/rfc-storage-tier-1.md)
-- Share feedback and ask questions via [GitHub issues](https://github.com/cloud-portable/storage/issues)
-- Propose changes via [pull requests](https://github.com/cloud-portable/storage/pulls)
-- Please follow our [code of conduct](https://github.com/cloud-portable/storage/blob/main/CODE_OF_CONDUCT.md) and be kind
+## Engagement
+
+This specification uses an open RFC process. Contributions occur through GitHub issues and pull requests.
+
+Moderated by @deaves and @olizilla.
+
+## Full Specification
+
+See [S3 API Compatibility Specification v1.0](S3_API_Compatibility_Specification_v1.0_1.md) for detailed API requirements, conformance testing procedures, and implementation guidance.
+
+## References
+
+- [ceph/s3-tests](https://github.com/ceph/s3-tests) - Industry standard for S3 compatibility testing
+- [AWS S3 API Reference](https://docs.aws.amazon.com/AmazonS3/latest/API/)

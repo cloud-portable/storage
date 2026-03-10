@@ -16,7 +16,7 @@ The minimum requirements for a system to function as an object store. Enables ba
 
 - [`CreateBucket`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html)
 - [`HeadBucket`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html)
-- [`DeleteBucket`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_DeleteBucket.html)
+- [`DeleteBucket`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucket.html)
 - [`PutObject` ](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html)
 - [`HeadObject`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html)
 - [`GetObject`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html)
@@ -24,7 +24,8 @@ The minimum requirements for a system to function as an object store. Enables ba
 - [`ListObjectsV2`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html)
 - [`ListBuckets`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html)
 - [`CopyObject`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CopyObject.html)
-- [`DeleteObjects`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html)   
+- [`DeleteObjects`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html)
+
 ## Tier 2: Reliability
 
 Essential for production workloads handling files larger than 100MB. Ensures reliability over unstable networks via multipart uploads.
@@ -37,6 +38,7 @@ Essential for production workloads handling files larger than 100MB. Ensures rel
 - [`AbortMultipartUpload`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_AbortMultipartUpload.html)
 - [`ListParts`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListParts.html)
 - [`ListMultipartUploads`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListMultipartUploads.html)
+
 ## Tier 3: Advanced
 
 TBD - Features required for complex application architectures

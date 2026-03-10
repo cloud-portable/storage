@@ -22,7 +22,9 @@ The minimum requirements for a system to function as an object store. Enables ba
 - [`GetObject`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html)
 - [`DeleteObject`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObject.html)
 - [`ListObjectsV2`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html)
-
+- [`ListBuckets`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html)
+- [`CopyObject`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CopyObject.html)
+- [`DeleteObjects`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html)   
 ## Tier 2: Reliability
 
 Essential for production workloads handling files larger than 100MB. Ensures reliability over unstable networks via multipart uploads.
@@ -34,7 +36,7 @@ Essential for production workloads handling files larger than 100MB. Ensures rel
 - [`CompleteMultipartUpload`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_CompleteMultipartUpload.html)
 - [`AbortMultipartUpload`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_AbortMultipartUpload.html)
 - [`ListParts`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListParts.html)
-
+- [`ListMultipartUploads`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListMultipartUploads.html)
 ## Tier 3: Advanced
 
 TBD - Features required for complex application architectures

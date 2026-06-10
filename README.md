@@ -78,6 +78,11 @@ The following tools and providers already implement portable S3-compatible stora
 | **Scaleway Object Storage** | ✅ | ✅ | ⚠️ | [API Call List](https://www.scaleway.com/en/docs/object-storage/api-cli/using-api-call-list/) |
 | **Tigris** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://www.tigrisdata.com/docs/s3/) |
 | **Wasabi** | ✅ | ✅ | ✅ | [API Support](https://wasabi.com/s3-compatible-cloud-storage/) |
+| **Alibaba Cloud OSS** | ✅ | ✅ | ✅ | [S3 Compatibility](https://www.alibabacloud.com/help/en/oss/developer-reference/compatibility-with-amazon-s3) |
+| **Tencent Cloud COS** | ✅ | ✅ | ⚠️ | [S3 Compatible Access](https://www.tencentcloud.com/document/product/436/34688) |
+| **Huawei Cloud OBS** | ⚠️ | ✅ | ⚠️ | [API Compatibility](https://developer.huawei.com/ict/en/doc/Object_Storage_Service_API_en_p/en-us_topic_0019159372.html) |
+| **Baidu Cloud BOS** | ⚠️ | ⚠️ | ⚠️ | [Compatible Tools](https://intl.cloud.baidu.com/en/doc/BOS/s/ojwvyq973-intl-en) |
+| **JD Cloud OSS** | ⚠️ | ⚠️ | ⚠️ | [S3 Compatible API](https://docs.jdcloud.com/en/object-storage-service/introduction-2) |
 
 _See something missing? Open a [pull request](https://github.com/cloud-portable/storage/pulls) to add it._
 

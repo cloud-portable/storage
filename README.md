@@ -37,6 +37,16 @@ Essential for production workloads handling files larger than 100MB. Ensures rel
 
 Features required for complex application architectures, including presigned URLs for client-side uploads and custom metadata handling.
 
+## Specification Formats
+
+We provide two machine-readable formats for the specification:
+- **Smithy AST JSON ([rfc-storage-tier-1.smithy.json](rfc-storage-tier-1.smithy.json))**: The authoritative protocol definition. It represents the exact S3 service shape, including SigV4 query-routing and header traits.
+- **OpenAPI 3.1 YAML ([rfc-storage-tier-1.openapi.yaml](rfc-storage-tier-1.openapi.yaml))**: Generated automatically from the Smithy AST. It is optimized for standard REST client generation, documentation, and mock testing.
+
+> [!NOTE]
+> The OpenAPI specification is provided as a convenience for interoperability (docs, client generation, and mocking). Because S3 uses complex non-REST routing mechanics and strict cryptographic signature authentication (SigV4), the OpenAPI representation cannot yet describe the API completely. The **Smithy AST remains the authoritative specification**.
+
+
 ## Implementors
 
 The following tools and providers already implement portable S3-compatible storage interfaces
@@ -82,9 +92,17 @@ Conversations will be moderated by @deaves and @olizilla until more admins are a
 - Working sub-optimal systems over idealized perfect systems
 - Simplicity and interoperability over incremental additional value
 
+## Major Open Questions
+
+As we shape this specification, several key architectural questions are under active debate:
+1. **Merging Tiers 1 and 2**: Should we merge Core CRUD and Multipart Uploads? Many production tools assume multipart uploads are always available.
+2. **Bucket Lifecycle Out-of-Band**: Should `CreateBucket` and `DeleteBucket` be removed from Tier 1? Many serverless S3 providers (like Cloudflare R2) require bucket management via custom dashboards or infrastructure-as-code, not S3 APIs.
+3. **Feature Classification**: Where should dynamic CORS configuration and Presigned URLs live?
+
+See the full list of open questions and join the debate in the **[Tiers Guide](tiers.md#under-discussion--unclassified-features)**.
+
 ## Get involved
 
-- Review the draft specification in [rfc-storage-tier-1.md](https://github.com/cloud-portable/storage/blob/main/rfc-storage-tier-1.md)
-- Share feedback and ask questions via [GitHub issues](https://github.com/cloud-portable/storage/issues)
-- Propose changes via [pull requests](https://github.com/cloud-portable/storage/pulls)
-- Please follow our [code of conduct](https://github.com/cloud-portable/storage/blob/main/CODE_OF_CONDUCT.md) and be kind
+- Review [tiers.md](./tiers.md)
+- Share feedback via [GitHub issues](https://github.com/cloud-portable/storage/issues) and [pull requests](https://github.com/cloud-portable/storage/pulls)
+- Follow the [code of conduct](CODE_OF_CONDUCT.md). Considerate contributions welcome!

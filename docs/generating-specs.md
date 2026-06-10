@@ -1,4 +1,4 @@
-# Rebuilding Specifications Guide
+# Generating Storage Specs
 
 The reproducible pipeline to map from AWS defined API spec to the per tier subset as md, smithy AST json, and openAPI yaml.
 

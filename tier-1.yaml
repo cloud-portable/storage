@@ -1,0 +1,34 @@
+name: "Tier 1: Core"
+description: "The minimum requirements for a system to function as an object store."
+operations:
+  - name: HeadBucket
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html"
+  - name: PutObject
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html"
+  - name: HeadObject
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadObject.html"
+  - name: GetObject
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_GetObject.html"
+  - name: DeleteObject
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObject.html"
+  - name: ListObjectsV2
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html"
+  - name: CopyObject
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CopyObject.html"
+  - name: DeleteObjects
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html"
+  - name: CreateMultipartUpload
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateMultipartUpload.html"
+  - name: UploadPart
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPart.html"
+  - name: UploadPartCopy
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPartCopy.html"
+  - name: CompleteMultipartUpload
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CompleteMultipartUpload.html"
+  - name: AbortMultipartUpload
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_AbortMultipartUpload.html"
+  - name: ListParts
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListParts.html"
+  - name: ListMultipartUploads
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListMultipartUploads.html"
+

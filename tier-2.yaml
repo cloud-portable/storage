@@ -1,0 +1,10 @@
+name: "Tier 2: Control Plane"
+description: "Operations required to provision and manage bucket namespaces."
+operations:
+  - name: CreateBucket
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html"
+  - name: DeleteBucket
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteBucket.html"
+  - name: ListBuckets
+    link: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html"
+

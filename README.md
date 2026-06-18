@@ -36,11 +36,9 @@ Object-level operations required to store and retrieve files. It includes:
 
 See: [rfc-storage-tier-1.md](./rfc-storage-tier-1.md)
 
-### Tier 2: Control Plane (WIP)
+### Tier 2: Bucket Management (WIP)
 
-This tier adds bucket level operations (`CreateBucket`, `DeleteBucket`, `ListBuckets`). Some providers fully support tier 1 but require bucket lifecycles are managed out-of-band.
-
-See: [rfc-storage-tier-2.md](./rfc-storage-tier-2.md)
+This tier adds bucket level operations (`CreateBucket`, `DeleteBucket`, `ListBuckets`). Some providers fully support tier 1 but require bucket lifecycles to be managed out-of-band.
 
 ### Tier 3: Advanced (Future Work)
 
@@ -53,7 +51,7 @@ We provide two machine-readable formats for the specification:
 - (WIP) **OpenAPI 3.1 YAML ([tier-1.openapi.yaml](tier-1.openapi.yaml))**: Generated automatically from the Smithy AST. It is optimized for standard REST client generation, documentation, and mock testing.
 
 > [!NOTE]
-> The OpenAPI specification is provided as a convenience for interoperability (docs, client generation, and mocking). Because S3 uses complex non-REST routing mechanics and strict cryptographic signature authentication (SigV4), the OpenAPI representation cannot yet describe the API completely. The **Smithy AST remains the authoritative specification**.
+> The OpenAPI specification is provided as a convenience for interoperability (docs, client generation, and mocking). Overloaded HTTP method+path combinations mean the OpenAPI representation cannot describe the API completely. The **Smithy AST remains the authoritative specification**. [Read more](./docs/openapi-issues.md)
 
 
 ## Implementors
@@ -62,7 +60,7 @@ The following tools and providers already implement portable S3-compatible stora
 
 ### Open Source Tools
 
-| Tool | Tier 1 (Core) | Tier 2 (Control Plane) | Documentation |
+| Tool | Tier 1 (Core) | Tier 2 (Bucket mgmt) | Documentation |
 | :--- | :---: | :---: | :--- |
 | **Ceph (RGW)** | ✅ | ✅ | [Ceph S3 API](https://docs.ceph.com/en/latest/radosgw/s3/) |
 | **Garage** | ✅ | ✅ | [Compatibility Matrix](https://garagehq.deuxfleurs.fr/documentation/reference-manual/s3-compatibility/) |
@@ -74,7 +72,7 @@ The following tools and providers already implement portable S3-compatible stora
 
 ### Cloud Services
 
-| Provider | Tier 1 (Core) | Tier 2 (Control Plane) | Documentation |
+| Provider | Tier 1 (Core) | Tier 2 (Bucket mgmt) | Documentation |
 | :--- | :---: | :---: | :--- |
 | **AWS S3** | ✅ | ✅ | [API Reference](https://aws.amazon.com/s3/) |
 | **Backblaze B2** | ✅ | ✅ | [S3 Compatible API](https://www.backblaze.com/docs/cloud-storage-s3-compatible-api) |

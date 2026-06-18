@@ -1,11 +1,11 @@
 # Generating Portable Storage Specs
 
-_How we get to a vendor-neutral, machine-readable object storaage spec subset._
+_How we get to a vendor-neutral, machine-readable object storage spec subset._
 
 **The gist**
 
-- Filter the [AWS smithy spec] down to the operations defined in tier-1.yml.
-- Rewrite the API docs to be vendor neutral and coherent for that subset.
+- Filter the [AWS S3 smithy spec] down to the operations defined in [tier-1.yml](../tier-1.yml).
+- Write new API docs to be vendor neutral and coherent for that subset.
 - Merge the new docs into the smithy spec.
 - Translate the smithy spec into an openAPI spec for general consumption.
 
@@ -75,4 +75,4 @@ The `storage-spec` binary is now available globally.
 * **Limitations**: The S3 API does things that cannot be described in openAPI. See: [openapi-issues.md](./openapi-issues.md)
 
 
-[AWS smithy spec]: https://github.com/aws/api-models-aws/tree/main/models/s3/service/2006-03-01
+[AWS S3 smithy spec]: https://github.com/aws/api-models-aws/tree/main/models/s3/service/2006-03-01

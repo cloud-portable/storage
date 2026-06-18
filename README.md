@@ -65,7 +65,7 @@ The following tools and providers already implement portable S3-compatible stora
 | Tool | Tier 1 (Core) | Tier 2 (Control Plane) | Documentation |
 | :--- | :---: | :---: | :--- |
 | **Ceph (RGW)** | ✅ | ✅ | [Ceph S3 API](https://docs.ceph.com/en/latest/radosgw/s3/) |
-| **Garage** | ✅ | ⚠️ | [Compatibility Matrix](https://garagehq.deuxfleurs.fr/documentation/reference-manual/s3-compatibility/) |
+| **Garage** | ✅ | ✅ | [Compatibility Matrix](https://garagehq.deuxfleurs.fr/documentation/reference-manual/s3-compatibility/) |
 | **MinIO** | ✅ | ✅ | [MinIO S3 API](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#s3-api-compatibility) |
 | **OpenStack Swift** | ✅ | ✅ | [Swift S3 Compat](https://docs.openstack.org/swift/latest/s3_compat.html) |
 | **SeaweedFS** | ✅ | ✅ | [SeaweedFS S3 API](https://github.com/seaweedfs/seaweedfs/wiki/Amazon-S3-API) |

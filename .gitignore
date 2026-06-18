@@ -1,3 +1,2 @@
-# Ignore raw S3 model cache in specs
-specs/s3-2006-03-01.json
-specs/.cache.json
+specs
+build

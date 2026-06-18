@@ -1,28 +1,39 @@
-# Generating Storage Specs
+# Generating Portable Storage Specs
 
-The reproducible pipeline to map from AWS defined API spec to the per tier subset as md, smithy AST json, and openAPI yaml.
+_How we get to a vendor-neutral, machine-readable object storaage spec subset._
 
-## Specification Formats: Smithy vs. OpenAPI
+**The gist**
 
-This project maintains two separate representations of the portable storage specification because they serve different engineering purposes:
+- Filter the [AWS smithy spec] down to the operations defined in tier-1.yml.
+- Rewrite the API docs to be vendor neutral and coherent for that subset.
+- Merge the new docs into the smithy spec.
+- Translate the smithy spec into an openAPI spec for general consumption.
 
-### 1. Smithy AST JSON (`rfc-storage-tier-1.smithy.json`)
-*   **The Source of Truth**: Smithy is AWS's modern IDL (Interface Definition Language) designed specifically to represent complex, protocol-heavy service APIs.
-*   **Why we use it**: S3 is not a standard REST API. It uses unique routing semantics (e.g. mapping different operations like `CopyObject` and `PutObject` to the exact same HTTP path and method via query parameters and headers) and requires strict SigV4 cryptographic signature signing traits. Smithy allows us to model these AWS-specific traits, protocol choices, and structures perfectly.
-*   **Primary Uses**: Service proxies, S3 client routing engines, and compliance capture tests.
+Once the baseline spec is agreed: 
 
-### 2. OpenAPI 3.1 YAML (`rfc-storage-tier-1.openapi.yaml`)
-*   **Developer-Friendly View**: A standard REST API representation of the subset.
-*   **Why we generate it**: The standard REST tooling ecosystem is built around OpenAPI. By compiling our Smithy spec to OpenAPI, we enable developers to use standard API tools (such as Swagger, Redocly, and Postman), generate client libraries in dozens of languages, and spin up mock servers out-of-the-box.
-*   **Overlapping HTTP Semantics**: Because multiple S3 operations map to the same HTTP path and method (e.g. `PUT /{Bucket}/{Key}` handles both object uploads and server-side copying), the generator merges these behaviors into single, clean, combined OpenAPI paths with descriptive, flat markdown documentation explaining the different request headers required for each behavior.
+- We `test` tools and services against it.
+- We `diff` other api specs against our baseline.
 
----
+**The layout**
 
-## Local Tooling Setup (Pre-publish)
+### `storage` repo
 
-Since the specification and tooling repositories are cloned as sibling directories, you can link the CLI tool globally to run it directly:
+* **`tier-1.yaml`**: Define the allowed operations, parameters, and headers.
+* **`operations/*.md`**: Documentation for each operation.
+* **Spec Outputs**: The generated `tier-1.smithy.json` and `tier-1.openapi.yaml`.
+
+### `storage-spec-cli` repo
+
+* **`bootstrap`**: Extracts a subset of shapes and operations from a source AWS Smithy model.
+* **`compile`**: Combines smithy AST and markdown docs to create new smithy and openapi spec.
+* **`test`**: Record a compatibilty test run for a service.
+* **`diff`**: Compare smithy ASTs.
+
+## Getting started
+
+Ensure both the `storage` and `storage-spec-cli` repositories are cloned as siblings. Link the CLI globally to run it locally:
+
 ```bash
-# From the parent directory:
 cd ../storage-spec-cli
 npm install
 npm run build
@@ -30,40 +41,38 @@ npm link
 cd ../storage
 ```
 
-Now, the `storage-spec` command is registered globally on your machine.
+The `storage-spec` binary is now available globally.
 
----
+### Workflow
 
-## The Spec Pipeline
+1. **Bootstrap the smithy AST** - Download and filter based on `tier-1.yaml`. Extracts initial Markdown doc templates under `operations/`:
+   ```bash
+   storage-spec bootstrap --source ./tier-1.yaml --output ./tier-1.smithy.bare.json --extract-docs ./operations
+   ```
+2. **Refine the docs** - Edit the extracted markdown files in `operations/` to improve the descriptions.
+3. **Compile the Specs** - Merge the bare AST and the md docs into the final Smithy AST and OpenAPI artifacts:
+   ```bash
+   storage-spec compile --input ./tier-1.smithy.bare.json --docs ./operations --output-smithy ./tier-1.smithy.json --output-openapi ./tier-1.openapi.yaml
+   ```
+4. **Generate HTML Documentation**
+   Builds the OpenAPI YAML into a client-facing HTML document:
+   ```bash
+   npx @redocly/cli build-docs ./tier-1.openapi.yaml -o ./docs/index.html -t ./docs/template.hbs
+   ```
 
-The specs are derived automatically in a two-stage process:
+## Specification Formats
 
-```mermaid
-graph TD
-    tiers[tiers.md] -->|1. Parse & Filter| init[storage-spec init]
-    aws_smithy[AWS S3 Smithy Model] -->|Input Shape definitions| init
-    init -->|Output| smithy_ast[rfc-storage-tier-1.smithy.json]
-    smithy_ast -->|2. Compile & Export| openapi[storage-spec openapi]
-    openapi -->|Output| openapi_yaml[rfc-storage-tier-1.openapi.yaml]
-```
+### Smithy AST JSON (`tier-1.smithy.json`)
 
-1. **Stage 1 (Filtering)**: The CLI tool reads the root `tiers.md` file, extracts the operation names listed under the Tier 1 section, and filters the canonical S3 Smithy AST shape definitions down to *only* those operations.
-2. **Stage 2 (Conversion)**: The CLI converts the filtered Smithy AST JSON to a standard OpenAPI 3.1 YAML schema, translating traits and resolving endpoint overlaps (e.g. merging `PutObject` and `CopyObject`).
+* Serves as the primary source of truth.
+* **Rationale**: S3 routes multiple distinct operations (e.g., `CopyObject` and `PutObject`) to identical HTTP paths and methods using headers and query parameters, and relies on AWS SigV4 traits. Smithy models these protocol-specific traits and signatures natively.
+* **Usage**: Client routing engines, service proxies, and compliance validators.
 
-## How to Regenerate
+### OpenAPI 3.1 YAML (`tier-1.openapi.yaml`)
 
-Run the following commands from the root of the `storage` repository:
+* Developer-facing REST representation.
+* **Rationale**: Exposes S3 features to standard API tooling ecosystems (Redocly, Postman, SDK generators).
+* **Limitations**: The S3 API does things that cannot be described in openAPI. See: [openapi-issues.md](./openapi-issues.md)
 
-### 1. Generate the Filtered Smithy AST JSON
-Downloads the raw AWS S3 models and filters them based on `tiers.md`:
-```bash
-storage-spec init --source ./tiers.md --output ./rfc-storage-tier-1.smithy.json
-```
 
-### 2. Generate the OpenAPI 3.1 YAML Schema
-Compiles the filtered Smithy shapes into standard OpenAPI:
-```bash
-storage-spec openapi --input ./rfc-storage-tier-1.smithy.json --output ./rfc-storage-tier-1.openapi.yaml
-```
-
-*(Note: Once the module is published to the public registry, you can substitute `storage-spec` with `npx @cloud-portable/storage-spec`.)*
+[AWS smithy spec]: https://github.com/aws/api-models-aws/tree/main/models/s3/service/2006-03-01

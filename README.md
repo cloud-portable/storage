@@ -13,7 +13,7 @@ But sovereignty, if defined as owning every layer of a technological stack, can 
 The incentives for creative development disappear. Competition and innovation subside."
 From [The Services Gap](https://lisboncouncil.net/the-service-gap-europe-international-digital-strategy-2025/)
 
-The underlying thinking of this project is to create a path to agency and sovereignty through portability.  Open specifications, that recognize as opposed to displace, existing defacto standards can further commodify mature technologies—starting and this increase optionality. It is unrealistic and would be counterproductive to have every country build its own digital infrastructure within the next decade. Success means making provider switching simple and creating a liquid market where domestic, international and inhouse providers can compete on service, resiliance and legal reliability, not lock-in. 
+The underlying thinking of this project is to create a path to agency and sovereignty through portability. Open specifications that recognize existing defacto standards can commoditize mature technologies and increase optionality. It is unrealistic and would be counterproductive to have every country build its own digital infrastructure within the next decade. Success means making provider switching simple and creating a liquid market where domestic, international and inhouse providers can compete on service, resiliance and legal reliability, not lock-in. 
 
 If a sufficiently clear specification exists, governments can leverage it to become market shapers: using procurement power to demand interoperability, recognizing de facto standards, and coordinating across borders. A small number of governments, operating around a clear set of specificiations can shape a market. This is how the railway market was shaped - governments chose what is now referred to the "standard gauge". We need to once again choose some standards for the core building blocks of a digital society.
 
@@ -23,25 +23,34 @@ Read more on the thinking about this [here](https://www.techpolicy.press/the-pat
 
 ## Scope
 
-Compliance is divided into 3 tiers. To be considered "S3 Compatible", a service must fully implement Tier 1.
+Conformance is divided into 3 tiers. To be considered "S3 Compatible", a service must fully implement Tier 1.
+
+See [rfc-storage-tier-1.md](./rfc-storage-tier-1.md) for more details.
 
 ### Tier 1: Core
 
-The minimum requirements for a system to function as an object store. Enables basic CRUD operations. Most static site generators and simple backup tools only need this. 
+Object-level operations required to store and retrieve files. It includes:
+*   **Object CRUD**: Create, Read, Update, Delete on objects
+*   **Bucket discovery**: Verify a bucket exists. List objects in a bucket.
+*   **Multipart uploads**: Required to reliably upload large files.
 
-### Tier 2: Reliability
+See: [rfc-storage-tier-1.md](./rfc-storage-tier-1.md)
 
-Essential for production workloads handling files larger than 100MB. Ensures reliability over unstable networks via multipart uploads.
+### Tier 2: Control Plane (WIP)
 
-### Tier 3: Advanced
+This tier adds bucket level operations (`CreateBucket`, `DeleteBucket`, `ListBuckets`). Some providers fully support tier 1 but require bucket lifecycles are managed out-of-band.
 
-Features required for complex application architectures, including presigned URLs for client-side uploads and custom metadata handling.
+See: [rfc-storage-tier-2.md](./rfc-storage-tier-2.md)
+
+### Tier 3: Advanced (Future Work)
+
+It is currently unspecified. This tier will cover advanced features e.g. Object Lifecycles, WORM/Object Lock configurations, Cross-Region Replication, and default Bucket Encryption settings.
 
 ## Specification Formats
 
 We provide two machine-readable formats for the specification:
-- **Smithy AST JSON ([rfc-storage-tier-1.smithy.json](rfc-storage-tier-1.smithy.json))**: The authoritative protocol definition. It represents the exact S3 service shape, including SigV4 query-routing and header traits.
-- **OpenAPI 3.1 YAML ([rfc-storage-tier-1.openapi.yaml](rfc-storage-tier-1.openapi.yaml))**: Generated automatically from the Smithy AST. It is optimized for standard REST client generation, documentation, and mock testing.
+- **Smithy AST JSON ([tier-1.smithy.json](tier-1.smithy.json))**: The authoritative protocol definition. It represents the exact S3 service shape, including SigV4 query-routing and header traits.
+- (WIP) **OpenAPI 3.1 YAML ([tier-1.openapi.yaml](tier-1.openapi.yaml))**: Generated automatically from the Smithy AST. It is optimized for standard REST client generation, documentation, and mock testing.
 
 > [!NOTE]
 > The OpenAPI specification is provided as a convenience for interoperability (docs, client generation, and mocking). Because S3 uses complex non-REST routing mechanics and strict cryptographic signature authentication (SigV4), the OpenAPI representation cannot yet describe the API completely. The **Smithy AST remains the authoritative specification**.
@@ -53,31 +62,32 @@ The following tools and providers already implement portable S3-compatible stora
 
 ### Open Source Tools
 
-| Tool | Tier 1 (Core) | Tier 2 (Reliability) | Tier 3 (Advanced) | Documentation |
-| :--- | :---: | :---: | :---: | :--- |
-| **Ceph (RGW)** | ✅ | ✅ | ✅ | [Ceph S3 API](https://docs.ceph.com/en/latest/radosgw/s3/) |
-| **Garage** | ✅ | ✅ | ⚠️ | [Compatibility Matrix](https://garagehq.deuxfleurs.fr/documentation/reference-manual/s3-compatibility/) |
-| **MinIO** | ✅ | ✅ | ✅ | [MinIO S3 API](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#s3-api-compatibility) |
-| **OpenStack Swift** | ✅ | ✅ | ⚠️ | [Swift S3 Compat](https://docs.openstack.org/swift/latest/s3_compat.html) |
-| **SeaweedFS** | ✅ | ✅ | ⚠️ | [SeaweedFS S3 API](https://github.com/seaweedfs/seaweedfs/wiki/Amazon-S3-API) |
-| **Zenko (CloudServer)** | ✅ | ✅ | ✅ | [CloudServer](https://github.com/scality/cloudserver) |
+| Tool | Tier 1 (Core) | Tier 2 (Control Plane) | Documentation |
+| :--- | :---: | :---: | :--- |
+| **Ceph (RGW)** | ✅ | ✅ | [Ceph S3 API](https://docs.ceph.com/en/latest/radosgw/s3/) |
+| **Garage** | ✅ | ⚠️ | [Compatibility Matrix](https://garagehq.deuxfleurs.fr/documentation/reference-manual/s3-compatibility/) |
+| **MinIO** | ✅ | ✅ | [MinIO S3 API](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#s3-api-compatibility) |
+| **OpenStack Swift** | ✅ | ✅ | [Swift S3 Compat](https://docs.openstack.org/swift/latest/s3_compat.html) |
+| **SeaweedFS** | ✅ | ✅ | [SeaweedFS S3 API](https://github.com/seaweedfs/seaweedfs/wiki/Amazon-S3-API) |
+| **Zenko (CloudServer)** | ✅ | ✅ | [CloudServer](https://github.com/scality/cloudserver) |
+
 
 ### Cloud Services
 
-| Provider | Tier 1 (Core) | Tier 2 (Reliability) | Tier 3 (Advanced) | Documentation |
-| :--- | :---: | :---: | :---: | :--- |
-| **AWS S3** | ✅ | ✅ | ✅ | [API Reference](https://aws.amazon.com/s3/) |
-| **Backblaze B2** | ✅ | ✅ | ⚠️ | [S3 Compatible API](https://www.backblaze.com/docs/cloud-storage-s3-compatible-api) |
-| **Cloudflare R2** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://developers.cloudflare.com/r2/api/s3/api/) |
-| **DigitalOcean Spaces** | ✅ | ✅ | ⚠️ | [Spaces API](https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/) |
-| **Google Cloud Storage** | ✅ | ✅ | ⚠️ | [Interoperability](https://cloud.google.com/storage/docs/interoperability) |
-| **IBM Cloud Object Storage** | ✅ | ✅ | ⚠️ | [Compatibility API](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-compatibility-api) |
-| **IDrive e2** | ✅ | ✅ | ⚠️ | [Developer Guide](https://www.idrive.com/s3-storage-e2/guides/s3_developer_guide) |
-| **Linode (Akamai)** | ✅ | ✅ | ⚠️ | [Object Storage API](https://techdocs.akamai.com/cloud-computing/docs/object-storage-s3-api) |
-| **Oracle Cloud (OCI)** | ✅ | ✅ | ⚠️ | [S3 Compatibility API](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/s3compatibleapi.htm) |
-| **Scaleway Object Storage** | ✅ | ✅ | ⚠️ | [API Call List](https://www.scaleway.com/en/docs/object-storage/api-cli/using-api-call-list/) |
-| **Tigris** | ✅ | ✅ | ⚠️ | [S3 Compatibility](https://www.tigrisdata.com/docs/s3/) |
-| **Wasabi** | ✅ | ✅ | ✅ | [API Support](https://wasabi.com/s3-compatible-cloud-storage/) |
+| Provider | Tier 1 (Core) | Tier 2 (Control Plane) | Documentation |
+| :--- | :---: | :---: | :--- |
+| **AWS S3** | ✅ | ✅ | [API Reference](https://aws.amazon.com/s3/) |
+| **Backblaze B2** | ✅ | ✅ | [S3 Compatible API](https://www.backblaze.com/docs/cloud-storage-s3-compatible-api) |
+| **Cloudflare R2** | ✅ | ✅ | [S3 Compatibility](https://developers.cloudflare.com/r2/api/s3/api/) |
+| **DigitalOcean Spaces** | ✅ | ✅ | [Spaces API](https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/) |
+| **Google Cloud Storage** | ✅ | ✅ | [Interoperability](https://cloud.google.com/storage/docs/interoperability) |
+| **IBM Cloud Object Storage** | ✅ | ✅ | [Compatibility API](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-compatibility-api) |
+| **IDrive e2** | ✅ | ✅ | [Developer Guide](https://www.idrive.com/s3-storage-e2/guides/s3_developer_guide) |
+| **Linode (Akamai)** | ✅ | ✅ | [Object Storage API](https://techdocs.akamai.com/cloud-computing/docs/object-storage-s3-api) |
+| **Oracle Cloud (OCI)** | ✅ | ✅ | [S3 Compatibility API](https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/s3compatibleapi.htm) |
+| **Scaleway Object Storage** | ✅ | ✅ | [API Call List](https://www.scaleway.com/en/docs/object-storage/api-cli/using-api-call-list/) |
+| **Tigris** | ✅ | ✅ | [S3 Compatibility](https://www.tigrisdata.com/docs/s3/) |
+| **Wasabi** | ✅ | ✅ | [API Support](https://wasabi.com/s3-compatible-cloud-storage/) |
 
 _See something missing? Open a [pull request](https://github.com/cloud-portable/storage/pulls) to add it._
 
@@ -95,14 +105,13 @@ Conversations will be moderated by @deaves and @olizilla until more admins are a
 ## Major Open Questions
 
 As we shape this specification, several key architectural questions are under active debate:
-1. **Merging Tiers 1 and 2**: Should we merge Core CRUD and Multipart Uploads? Many production tools assume multipart uploads are always available.
-2. **Bucket Lifecycle Out-of-Band**: Should `CreateBucket` and `DeleteBucket` be removed from Tier 1? Many serverless S3 providers (like Cloudflare R2) require bucket management via custom dashboards or infrastructure-as-code, not S3 APIs.
-3. **Feature Classification**: Where should dynamic CORS configuration and Presigned URLs live?
+1. **Presigned URLs**: Where should client-signed URL operations and signature profiles live (e.g., query-parameter authentication)?
+2. **Conformance Testing Suite**: How should automated validation testing be structured to verify compliance across different engines?
 
-See the full list of open questions and join the debate in the **[Tiers Guide](tiers.md#under-discussion--unclassified-features)**.
+See the full list of open questions and join the debate in [GitHub Issues](https://github.com/cloud-portable/storage/issues).
 
 ## Get involved
 
-- Review [tiers.md](./tiers.md)
+- Review [rfc-storage-tier-1.md](./rfc-storage-tier-1.md)
 - Share feedback via [GitHub issues](https://github.com/cloud-portable/storage/issues) and [pull requests](https://github.com/cloud-portable/storage/pulls)
 - Follow the [code of conduct](CODE_OF_CONDUCT.md). Considerate contributions welcome!

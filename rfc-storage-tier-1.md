@@ -25,25 +25,25 @@ These specifications are reproducibly generated from `tier-1.yaml` using the `st
 To achieve Tier 1 compatibility, a storage provider MUST support the following 15 operations divided into Core (Single-Part) and Multipart profiles:
 
 ### Core Operations (Object CRUD & Discovery)
-- **`HeadBucket`** (`HEAD /bucket`): Check bucket existence and access rights.
-- **`ListObjectsV2`** (`GET /bucket?list-type=2`): Paginated list of objects.
-- **`HeadObject`** (`HEAD /bucket/key`): Retrieves object metadata.
-- **`GetObject`** (`GET /bucket/key`): Retrieves object body and metadata.
-- **`PutObject`** (`PUT /bucket/key`): Uploads/overwrites an object atomically.
-- **`CopyObject`** (`PUT /bucket/key` with `x-amz-copy-source`): Copies an object server-side.
-- **`DeleteObject`** (`DELETE /bucket/key`): Idempotently deletes an object.
-- **`DeleteObjects`** (`POST /bucket?delete`): Performs a bulk delete in a single HTTP request.
+- **`HeadBucket`** `HEAD /{bucket}` Check bucket existence and access rights.
+- **`ListObjectsV2`** `GET /{bucket}?list-type=2` Paginated list of objects.
+- **`HeadObject`** `HEAD /{bucket}/{key}` Retrieves object metadata.
+- **`GetObject`** `GET /{bucket}/{key}` Retrieves object body and metadata.
+- **`PutObject`** `PUT /{bucket}/{key}` Uploads/overwrites an object atomically.
+- **`CopyObject`** `PUT /{bucket}/{key}` with `x-amz-copy-source` Copies an object server-side.
+- **`DeleteObject`** `DELETE /{bucket}/{key}` Idempotently deletes an object.
+- **`DeleteObjects`** `POST /{bucket}?delete` Performs a bulk delete in a single HTTP request.
 
 ### Multipart Operations
-- **`CreateMultipartUpload`** (`POST /bucket/key?uploads`): Initiates a multipart upload session.
-- **`UploadPart`** (`PUT /bucket/key?uploadId=ID&partNumber=N`): Uploads an individual chunk.
-- **`UploadPartCopy`** (`PUT /bucket/key?uploadId=ID&partNumber=N` with `x-amz-copy-source`): Copies a chunk server-side.
-- **`CompleteMultipartUpload`** (`POST /bucket/key?uploadId=ID`): Assembles all parts into a finished object.
-- **`AbortMultipartUpload`** (`DELETE /bucket/key?uploadId=ID`): Cancels the session and deletes uploaded chunks.
-- **`ListParts`** (`GET /bucket/key?uploadId=ID`): Lists uploaded parts for an active session.
-- **`ListMultipartUploads`** (`GET /bucket?uploads`): Lists all active multipart uploads for a bucket.
+- **`CreateMultipartUpload`** `POST /{bucket}/{key}?uploads` Initiates a multipart upload session.
+- **`UploadPart`** `PUT /{bucket}/{key}?uploadId={id}&partNumber={n}` Uploads an individual chunk.
+- **`UploadPartCopy`** `PUT /{bucket}/{key}?uploadId={id}&partNumber={n}` with `x-amz-copy-source` Copies a chunk server-side.
+- **`CompleteMultipartUpload`** `POST /{bucket}/{key}?uploadId={id}` Assembles all parts into a finished object.
+- **`AbortMultipartUpload`** `DELETE /{bucket}/{key}?uploadId={id}` Cancels the session and deletes uploaded chunks.
+- **`ListParts`** `GET /{bucket}/{key}?uploadId={id}` Lists uploaded pa for an active session.
+- **`ListMultipartUploads`** `GET /{bucket}?uploads` Lists all active multipart uploads for a bucket.
 
 ## 3. Protocol & Authentication Requirements
 
 - **Authentication**: Providers MUST support AWS Signature Version 4 (SigV4) authentication via the `Authorization` header.
-- **Addressing Styles**: Providers SHOULD support Path-Style addressing (`https://endpoint/bucket/key`).
+- **Addressing Styles**: Providers SHOULD support Path-Style addressing (`https://endpoint/{bucket}/{key}`).

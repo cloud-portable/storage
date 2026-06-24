@@ -25,8 +25,6 @@ Read more on the thinking about this [here](https://www.techpolicy.press/the-pat
 
 Conformance is divided into 3 tiers. To be considered "S3 Compatible", a service must fully implement Tier 1.
 
-See [rfc-storage-tier-1.md](./rfc-storage-tier-1.md) for more details.
-
 ### Tier 1: Core
 
 Object-level operations required to store and retrieve files. It includes:

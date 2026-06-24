@@ -46,4 +46,4 @@ To achieve Tier 1 compatibility, a storage provider MUST support the following 1
 ## 3. Protocol & Authentication Requirements
 
 - **Authentication**: Providers MUST support AWS Signature Version 4 (SigV4) authentication via the `Authorization` header.
-- **Addressing Styles**: Providers SHOULD support Path-Style addressing (`https://endpoint/{bucket}/{key}`).
+- **Addressing Styles**: Providers SHOULD support Path-Style addressing (`https://endpoint/{bucket}/{+key}`).

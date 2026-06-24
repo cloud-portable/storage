@@ -27,20 +27,20 @@ To achieve Tier 1 compatibility, a storage provider MUST support the following 1
 ### Core Operations (Object CRUD & Discovery)
 - **`HeadBucket`** `HEAD /{bucket}` Check bucket existence and access rights.
 - **`ListObjectsV2`** `GET /{bucket}?list-type=2` Paginated list of objects.
-- **`HeadObject`** `HEAD /{bucket}/{key}` Retrieves object metadata.
-- **`GetObject`** `GET /{bucket}/{key}` Retrieves object body and metadata.
-- **`PutObject`** `PUT /{bucket}/{key}` Uploads/overwrites an object atomically.
-- **`CopyObject`** `PUT /{bucket}/{key}` with `x-amz-copy-source` Copies an object server-side.
-- **`DeleteObject`** `DELETE /{bucket}/{key}` Idempotently deletes an object.
+- **`HeadObject`** `HEAD /{bucket}/{+key}` Retrieves object metadata.
+- **`GetObject`** `GET /{bucket}/{+key}` Retrieves object body and metadata.
+- **`PutObject`** `PUT /{bucket}/{+key}` Uploads/overwrites an object atomically.
+- **`CopyObject`** `PUT /{bucket}/{+key}` with `x-amz-copy-source` Copies an object server-side.
+- **`DeleteObject`** `DELETE /{bucket}/{+key}` Idempotently deletes an object.
 - **`DeleteObjects`** `POST /{bucket}?delete` Performs a bulk delete in a single HTTP request.
 
 ### Multipart Operations
-- **`CreateMultipartUpload`** `POST /{bucket}/{key}?uploads` Initiates a multipart upload session.
-- **`UploadPart`** `PUT /{bucket}/{key}?uploadId={id}&partNumber={n}` Uploads an individual chunk.
-- **`UploadPartCopy`** `PUT /{bucket}/{key}?uploadId={id}&partNumber={n}` with `x-amz-copy-source` Copies a chunk server-side.
-- **`CompleteMultipartUpload`** `POST /{bucket}/{key}?uploadId={id}` Assembles all parts into a finished object.
-- **`AbortMultipartUpload`** `DELETE /{bucket}/{key}?uploadId={id}` Cancels the session and deletes uploaded chunks.
-- **`ListParts`** `GET /{bucket}/{key}?uploadId={id}` Lists uploaded pa for an active session.
+- **`CreateMultipartUpload`** `POST /{bucket}/{+key}?uploads` Initiates a multipart upload session.
+- **`UploadPart`** `PUT /{bucket}/{+key}?partNumber={partNumber}&uploadId={uploadId}` Uploads an individual chunk.
+- **`UploadPartCopy`** `PUT /{bucket}/{+key}?partNumber={partNumber}&uploadId={uploadId}` with `x-amz-copy-source` Copies a chunk server-side.
+- **`CompleteMultipartUpload`** `POST /{bucket}/{+key}?uploadId={uploadId}` Assembles all parts into a finished object.
+- **`AbortMultipartUpload`** `DELETE /{bucket}/{+key}?uploadId={uploadId}` Cancels the session and deletes uploaded chunks.
+- **`ListParts`** `GET /{bucket}/{+key}?uploadId={uploadId}` Lists uploaded parts for an active session.
 - **`ListMultipartUploads`** `GET /{bucket}?uploads` Lists all active multipart uploads for a bucket.
 
 ## 3. Protocol & Authentication Requirements
